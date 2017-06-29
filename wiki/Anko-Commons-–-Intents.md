@@ -1,10 +1,10 @@
 ## Contents
 
-* [Using Anko `Intent` helpers in your project](#using-anko-intent-helpers-in-your-project)
-* [`Intent` builder functions](#intent-builder-functions)
-* [Useful `Intent` callers](#useful-intent-callers)
+* [在你的项目中添加依赖](#在你的项目中添加依赖)
+* [优雅的创建和使用Intent](#优雅的创建和使用Intent)
+* [自带的特效](#自带的特效)
 
-## Using Anko `Intent` helpers in your project
+## 在你的项目中添加依赖
 
 Intent helpers are inside the `anko-commons` artifact. Add it as a dependency to your `build.gradle`:
 
@@ -13,7 +13,7 @@ dependencies {
     compile "org.jetbrains.anko:anko-commons:$anko_version"
 }
 ```
-## `Intent` builder functions
+## 优雅的创建和使用Intent
 
 In general, you have to write a couple of lines to start a new `Activity`. And it requires you to write an additional line for each value you pass as an extra. For example, this is a code for starting an `Activity` with extra `("id", 5)` and a special flag:
 
@@ -36,12 +36,12 @@ If you don't need to pass any flags, the solution is even easier:
 startActivity<SomeOtherActivity>("id" to 5)
 ```
 
-## Useful `Intent` callers
+## 自带的特效
 
 Anko has call wrappers for some widely used `Intents`:
 
 Goal                | Solution
---------------------|--------- 
+--------------------|---------
 Make a call         | `makeCall(number)` without **tel:**
 Send a text         | `sendSMS(number, [text])` without **sms:**
 Browse the web      | `browse(url)`
