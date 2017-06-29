@@ -1,12 +1,10 @@
-## Contents
+## 目录
 
 * [在你的项目中添加依赖](#在你的项目中添加依赖)
 * [优雅的创建和使用Intent](#优雅的创建和使用Intent)
 * [自带的特效](#自带的特效)
 
 ## 在你的项目中添加依赖
-
-Intent helpers are inside the `anko-commons` artifact. Add it as a dependency to your `build.gradle`:
 
 ```groovy
 dependencies {
