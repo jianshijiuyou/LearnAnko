@@ -18,7 +18,7 @@ dependencies {
 ```kotlin
 val intent = Intent(this, SomeOtherActivity::class.java)
 intent.putExtra("id", 5)
-intent.setFlag(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 startActivity(intent)
 ```
 
@@ -46,4 +46,6 @@ Anko 已经考虑到了一些广泛的使用情况，并作了对应的封装：
 文字分享              | `share(text, [subject])`
 发送邮件              | `email(email, [subject], [text])`
 
-（`[]`）中的参数是可选择的，操作成功，将返回 true。
+（`[]`）中的参数是可选择的，操作成功，将返回 true。  
+### 本篇文章相关代码传送门
+[IntentsActivity.kt](https://github.com/jianshijiuyou/LearnAnko/blob/master/app/src/main/java/info/jiuyou/learnanko/commons/IntentsActivity.kt)
