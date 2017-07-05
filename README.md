@@ -1,5 +1,5 @@
-[原文链接](https://github.com/Kotlin/anko/wiki)
-==============================
+## [官方链接](https://github.com/Kotlin/anko/wiki)
+
 说明
 ==============================
 因为笔者能力有限，所以本文并不是真正意义上的翻译，很多地方都是笔者根据自己的的理解所写，如有错误，欢迎指正，与君共勉。
@@ -11,7 +11,7 @@ Anko 是一个 kotlin library ， 它能让你更轻松更快速的开发 androi
 Anko 由以下几个部分组成:
 
 * Anko Commons: 一个轻量级的组件帮助库：
-	* [Intents](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-%E2%80%93-Intents.md);
+	* [Intents](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-%E2%80%93-Intents.md); （已完成）
 	* [Dialogs and toasts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Dialogs.md);
 	* [Logging](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Logging.md);
 	* [Resources and dimensions](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Misc.md);
