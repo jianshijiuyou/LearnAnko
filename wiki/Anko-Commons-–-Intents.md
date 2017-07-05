@@ -13,7 +13,7 @@ dependencies {
 ```
 ## 优雅的创建和使用Intent
 
-In general, you have to write a couple of lines to start a new `Activity`. And it requires you to write an additional line for each value you pass as an extra. For example, this is a code for starting an `Activity` with extra `("id", 5)` and a special flag:
+一般来说，如果你需要在启动一个 intent 时携带参数，那么至少需要编写三行代码（初始化、添加参数、启动），多一个参数或多一个flag，就要多写一行代码，比如下面这样：
 
 ```kotlin
 val intent = Intent(this, SomeOtherActivity::class.java)
@@ -22,13 +22,13 @@ intent.setFlag(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 startActivity(intent)
 ```
 
-Four lines is too much for this. Anko offers you an easier way:
+居然要编写四行代码，太多了，Anko 提供了更加简单的方式：
 
 ```kotlin
 startActivity(intentFor<SomeOtherActivity>("id" to 5).singleTop())
 ```
 
-If you don't need to pass any flags, the solution is even easier:
+如果你不需要任何参数或 flag，那更加简单：
 
 ```kotlin
 startActivity<SomeOtherActivity>("id" to 5)
@@ -36,14 +36,14 @@ startActivity<SomeOtherActivity>("id" to 5)
 
 ## 自带的特效
 
-Anko has call wrappers for some widely used `Intents`:
+Anko 已经考虑到了一些广泛的使用情况，并作了对应的封装：
 
-Goal                | Solution
+目标                | 方法
 --------------------|---------
-Make a call         | `makeCall(number)` without **tel:**
-Send a text         | `sendSMS(number, [text])` without **sms:**
-Browse the web      | `browse(url)`
-Share some text     | `share(text, [subject])`
-Send a email        | `email(email, [subject], [text])`
+拨打电话              | `makeCall(number)` without **tel:**
+发短信                | `sendSMS(number, [text])` without **sms:**
+使用自来浏览器打开网页  | `browse(url)`
+文字分享              | `share(text, [subject])`
+发送邮件              | `email(email, [subject], [text])`
 
-Arguments in square brackets (`[]`) are optional. Methods return true if the intent was sent.
+（`[]`）中的参数是可选择的，操作成功，将返回 true。
