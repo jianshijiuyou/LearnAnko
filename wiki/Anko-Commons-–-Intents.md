@@ -3,7 +3,7 @@
 * [在你的项目中添加依赖](#在你的项目中添加依赖)
 * [优雅的创建和使用Intent](#优雅的创建和使用intent)
 * [自带的特效](#自带的特效)
-
+* [本篇文章相关代码传送门](#本篇文章相关代码传送门)
 ## 在你的项目中添加依赖
 
 ```groovy
@@ -40,8 +40,8 @@ Anko 已经考虑到了一些广泛的使用情况，并作了对应的封装：
 
 目标                | 方法
 --------------------|---------
-拨打电话              | `makeCall(number)` without **tel:**
-发短信                | `sendSMS(number, [text])` without **sms:**
+拨打电话              | `makeCall(number)`
+发短信                | `sendSMS(number, [text])`
 使用自来浏览器打开网页  | `browse(url)`
 文字分享              | `share(text, [subject])`
 发送邮件              | `email(email, [subject], [text])`
