@@ -3,26 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <Button
-        android:id="@+id/btnAnkoCommons"
+        android:id="@+id/btnSA"
         android:layout_width="wrap_content"
-        android:text="Anko Commons 一个轻量级的组件帮助库"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btnAnkoLayouts"
-        android:layout_width="wrap_content"
-        android:text="Anko Layouts 用一种快速并且类型安全的方式动态的编写 android 布局"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btnAnkoSQLite"
-        android:layout_width="wrap_content"
-        android:text="Anko SQLite 更加简单的操作数据库"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btnAnkoCoroutines"
-        android:layout_width="wrap_content"
-        android:text="Anko Coroutines 协程"
+        android:text="启动一个activity"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/btnCall"
+        android:layout_width="wrap_content"
+        android:text="打电话"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnSMS"
+        android:layout_width="wrap_content"
+        android:text="发短信"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnURL"
+        android:layout_width="wrap_content"
+        android:text="打开网页"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnShare"
+        android:layout_width="wrap_content"
+        android:text="分享文字"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnEmail"
+        android:layout_width="wrap_content"
+        android:text="发送邮件"
+        android:layout_height="wrap_content" />
 </LinearLayout>

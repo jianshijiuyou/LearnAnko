@@ -1,7 +1,7 @@
 ## 目录
 
 * [在你的项目中添加依赖](#在你的项目中添加依赖)
-* [优雅的创建和使用Intent](#优雅的创建和使用Intent)
+* [优雅的创建和使用Intent](#优雅的创建和使用intent)
 * [自带的特效](#自带的特效)
 
 ## 在你的项目中添加依赖
@@ -28,7 +28,7 @@ startActivity(intent)
 startActivity(intentFor<SomeOtherActivity>("id" to 5).singleTop())
 ```
 
-如果你不需要任何参数或 flag，那更加简单：
+如果你不需要任何flag，那更加简单：
 
 ```kotlin
 startActivity<SomeOtherActivity>("id" to 5)
