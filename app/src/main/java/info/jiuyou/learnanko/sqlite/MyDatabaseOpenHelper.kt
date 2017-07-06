@@ -35,19 +35,18 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatab
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Here you create tables
-//            db.createTable("Customer", ifNotExists = true,
-//                    "id" to INTEGER + PRIMARY_KEY + UNIQUE,
-//                    "name" to TEXT,
-//                    "photo" to BLOB)
-        db.createTable("Customer",true,
+        //创建表
+        db.createTable("User",true,
                 "id" to INTEGER + PRIMARY_KEY + UNIQUE,
                 "name" to TEXT,
-                "photo" to BLOB)
+                "sex" to TEXT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Here you can upgrade tables, as usual
-        db.dropTable("User", true)
+        //数据库版本变更后回调
     }
 }
+
+// 在 Context 下提供一个访问的变量
+val Context.database: MyDatabaseOpenHelper
+    get() = MyDatabaseOpenHelper.getInstance(getApplicationContext())

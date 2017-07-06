@@ -45,25 +45,24 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatab
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Here you create tables
-        db?.createTable("Customer", ifNotExists = true,
-                    "id" to INTEGER + PRIMARY_KEY + UNIQUE,
-                    "name" to TEXT,
-                    "photo" to BLOB)
+        //创建表
+        db.createTable("User",true,
+                "id" to INTEGER + PRIMARY_KEY + UNIQUE,
+                "name" to TEXT,
+                "sex" to TEXT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Here you can upgrade tables, as usual
-        db?.dropTable("User", true)
+        //数据库版本变更后回调
     }
 }
 
-// Access property for Context
+// 在 Context 下提供一个访问的变量
 val Context.database: MyDatabaseOpenHelper
     get() = MyDatabaseOpenHelper.getInstance(getApplicationContext())
 ```
 
-So what's the sense? Instead of enclosing your code into `try` blocks, now you can just write this:
+在 use 中 的语句块自动被套上 `try` 块，并且语句块执行完毕后自动调用 `close` 方法释放资源，在 use 语句块中包含了 SQLiteDatabase 的实例，也就是可以直接调用它的所有 public 属性和方法。
 
 ```kotlin
 database.use {
@@ -71,9 +70,7 @@ database.use {
 }
 ```
 
-The database will definitely be closed after executing all code inside `{}`.
-
-Asynchronous call example:
+异步调用示例：
 
 ```kotlin
 class SomeActivity : Activity() {

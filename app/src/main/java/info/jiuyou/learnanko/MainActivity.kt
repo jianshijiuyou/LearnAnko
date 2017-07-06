@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.PermissionListener
 import info.jiuyou.learnanko.commons.CommonsActivity
+import info.jiuyou.learnanko.sqlite.SQLiteActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -21,7 +22,9 @@ class MainActivity : AppCompatActivity() {
 
         btnAnkoLayouts.setOnClickListener { toast("anko layouts") }
 
-        btnAnkoSQLite.setOnClickListener { toast("anko sqlite") }
+        btnAnkoSQLite.setOnClickListener {
+            startActivity<SQLiteActivity>()
+        }
 
         btnAnkoCoroutines.setOnClickListener { toast("anko coroutines") }
 
@@ -29,7 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         AndPermission.with(this@MainActivity)
                 .requestCode(100)
-                .permission(Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS)
+                .permission(Manifest.permission.CALL_PHONE,
+                        Manifest.permission.SEND_SMS,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .callback(object : PermissionListener {
                     override fun onSucceed(requestCode: Int, grantPermissions: MutableList<String>) {
 
