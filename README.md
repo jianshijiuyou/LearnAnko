@@ -14,7 +14,7 @@ Anko 由以下几个部分组成:
 * Anko Commons: 一个轻量级的组件帮助库：
 	* [Intents](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-%E2%80%93-Intents.md); （已完成）
 	* [Dialogs and toasts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Dialogs.md);（已完成）
-	* [Logging](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Logging.md);
+	* [Logging](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Logging.md);（已完成）
 	* [Resources and dimensions](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Misc.md);
 * [Anko Layouts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Layouts.md): 用一种快速并且类型安全的方式动态的编写 android 布局
 * [Anko SQLite](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-SQLite.md): 更加简单的操作数据库
