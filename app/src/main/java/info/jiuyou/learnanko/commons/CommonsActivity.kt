@@ -23,5 +23,9 @@ class CommonsActivity : AppCompatActivity() {
         btnLog.setOnClickListener {
             startActivity<LoggingActivity>()
         }
+
+        btnRes.setOnClickListener {
+            startActivity<MiscActivity>()
+        }
     }
 }
