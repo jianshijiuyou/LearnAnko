@@ -19,5 +19,9 @@ class CommonsActivity : AppCompatActivity() {
         btnDialogs.setOnClickListener {
             startActivity<DialogsActivity>()
         }
+
+        btnLog.setOnClickListener {
+            startActivity<LoggingActivity>()
+        }
     }
 }

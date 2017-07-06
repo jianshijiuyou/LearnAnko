@@ -22,7 +22,8 @@
         <activity android:name=".commons.IntentsActivity" />
         <activity android:name=".commons.SomeOtherActivity" />
         <activity android:name=".commons.DialogsActivity" />
-        <activity android:name=".commons.CommonsActivity"></activity>
+        <activity android:name=".commons.CommonsActivity" />
+        <activity android:name=".commons.LoggingActivity"/>
     </application>
 
 </manifest>

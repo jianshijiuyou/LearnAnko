@@ -1,12 +1,11 @@
-## Contents
+## 概要
 
-* [Using `AnkoLogger` in your project](#using-ankologger-in-your-project)
-* [Trait-like style](#trait-like-style)
-* [Logger object style](#logger-object-style)
+* [在你的项目中添加依赖](#在你的项目中添加依赖)
+* [Trait-like style（继承模式）](#trait-like-style)
+* [Logger object style （对象模式）](#logger-object-style)
+* [本篇文章相关代码传送门](#本篇文章相关代码传送门)
 
-## Using `AnkoLogger` in your project
-
-`AnkoLogger` is inside the `anko-commons` artifact. Add it as a dependency to your `build.gradle`:
+## 在你的项目中添加依赖
 
 ```groovy
 dependencies {
@@ -16,17 +15,28 @@ dependencies {
 
 ## Trait-like style
 
-Android SDK provides [`android.util.Log`](https://developer.android.com/reference/android/util/Log.html) class with some logging methods. Usage is pretty straightforward though the methods require you to pass a `tag` argument. You can eliminate this with using `AnkoLogger` trait-like interface:
+让需要 log 的 class 继承 AnkoLogger ，这样在 class 中就能方便的使用 log 了，这种方式下默认的 TAG 为 "LoggingActivity",也就是 AnkoLogger 所继承的类的类名。
 
 ```kotlin
-class SomeActivity : Activity(), AnkoLogger {
-    private fun someMethod() {
-        info("London is the capital of Great Britain")
-        debug(5) // .toString() method will be executed
-        warn(null) // "null" will be printed
+class LoggingActivity : AppCompatActivity(), AnkoLogger {
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        、、、、、、
+
+        info("info log")
+        warn(null) // 打印 "null"
+        //这里debug打印不出来，因为内部调用了Log.isLoggable方法，具体自行google
+        debug("debug log")
+
     }
 }
+
+//=============输出结果================
+//  I/LoggingActivity: info log
+//  W/LoggingActivity: null
 ```
+
+#### 方法对照表
 
 android.util.Log  | AnkoLogger
 ------------------|------------
@@ -37,28 +47,38 @@ android.util.Log  | AnkoLogger
 `e()`             | `error()`
 `wtf()`           | `wtf()`
 
-The default tag name is a class name (`SomeActivity` in this case) but you can easily change it by overriding the `loggerTag` property.
-
-Each method has two versions: plain and lazy (inlined):
+使用方式有两种: plain 和 lazy (inlined):
 
 ```kotlin
 info("String " + "concatenation")
 info { "String " + "concatenation" }
 ```
 
-Lambda result will be calculated only if `Log.isLoggable(tag, Log.INFO)` is `true`.
+AnkoLogger 的 log 方法 内部都会去调用  `Log.isLoggable()` ，当返回 `true` 的时候 log 才会被打印，这和以前直接使用 `Log.d()` 等方法打印不同。
 
 ## Logger object style
 
-You can also use `AnkoLogger` as a plain object.
+把 AnkoLogger 当作一个普通对象使用。
 
 ```kotlin
-class SomeActivity : Activity() {
-    private val log = AnkoLogger<SomeActivity>(this)
-    private val logWithASpecificTag = AnkoLogger("my_tag")
+class LoggingActivity : AppCompatActivity(), AnkoLogger {
+    private val log = AnkoLogger(this::class.java)
+    private val logCustomTag = AnkoLogger("my_tag")
+    override fun onCreate(savedInstanceState: Bundle?) {
 
-    private fun someMethod() {
-        log.warning("Big brother is watching you!")
+        、、、、、
+
+        log.info{"info log"}
+        log.warn(null)
+        logCustomTag.info("info log")
+        logCustomTag.warn(null)
     }
 }
+//===============输出结果=================
+//  I/LoggingActivity: info log
+//  W/LoggingActivity: null
+//  I/my_tag: info log
+//  W/my_tag: null
 ```
+### 本篇文章相关代码传送门
+[LoggingActivity.kt](https://github.com/jianshijiuyou/LearnAnko/blob/master/app/src/main/java/info/jiuyou/learnanko/commons/LoggingActivity.kt)
