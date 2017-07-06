@@ -24,7 +24,8 @@
         <activity android:name=".commons.DialogsActivity" />
         <activity android:name=".commons.CommonsActivity" />
         <activity android:name=".commons.LoggingActivity" />
-        <activity android:name=".commons.MiscActivity"></activity>
+        <activity android:name=".commons.MiscActivity" />
+        <activity android:name=".sqlite.SQLiteActivity"></activity>
     </application>
 
 </manifest>

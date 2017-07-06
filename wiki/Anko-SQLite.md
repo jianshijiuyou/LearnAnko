@@ -1,11 +1,11 @@
-Have you ever been tired of parsing SQLite query results using Android cursors? You have to write lots of boilerplate code just to parse query result rows, and enclose it in countless `try..finally` blocks to properly close all opened resources.
+你是否已经厌倦了用 Android cursors 解析 SQLite 查询的结果，每次必须编写大量的模板代码才能解析出查询结果，并将其封装在无数的 `try..finally` 块中以关闭打开的所有资源。
 
-Anko provides lots of extension functions to simplify working with SQLite databases.
+Anko 提供了大量的扩展功能，大大简化了 SQLite 的使用方式。
 
-## Contents
+## 概要
 
-* [Using Anko SQLite in your project](#using-anko-sqlite-in-your-project)
-* [Accessing database](#accessing-database)
+* [在你的项目中添加依赖](#在你的项目中添加依赖)
+* [访问数据库](#访问数据库)
 * [Creating and dropping tables](#creating-and-dropping-tables)
 * [Inserting data](#inserting-data)
 * [Querying data](#querying-data)
@@ -16,9 +16,7 @@ Anko provides lots of extension functions to simplify working with SQLite databa
 * [Transactions](#transactions)
 
 
-## Using Anko SQLite in your project
-
-Add the `anko-sqlite` dependency to your `build.gradle`:
+## 在你的项目中添加依赖
 
 ```groovy
 dependencies {
@@ -26,11 +24,11 @@ dependencies {
 }
 ```
 
-## Accessing the database
+## 访问数据库
 
-If you use `SQLiteOpenHelper`, you generally call `getReadableDatabase()` or `getWritableDatabase()` (result is actually the same in production code), but then you must be sure to call the `close()` method on the received `SQLiteDatabase`. Also, you have to cache the helper class somewhere, and if you use it from several threads, you must be aware of the concurrent access. All this is pretty tough. That is why Android developers are not really keen on default SQLite API and prefer to use fairly expensive wrappers such as ORMs instead.
+如果使用 `SQLiteOpenHelper`, 一般是调用 `getReadableDatabase()` 或者 `getWritableDatabase()` , 但是必须记住在使用后调用 `close` 来释放资源 ，并且需要把 `SQLiteOpenHelper` 对象缓存起来，如果还想在多个线程中使用同一个 helper 对象，还要解决并发访问的问题 。 这一切都很难。这就是为什么开发者都不太喜欢默认的 SQLite API，而是更喜欢一些第三方的 ORM 库。
 
-Anko provides a special class `ManagedSQLiteOpenHelper` that seamlessly replaces the default one. Here's how you can use it:
+Anko 提供了一个特别的类 `ManagedSQLiteOpenHelper` ，可以无缝地替换掉默认的 API。下面就看看如何使用它：
 
 ```kotlin
 class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1) {
@@ -48,7 +46,7 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatab
 
     override fun onCreate(db: SQLiteDatabase) {
         // Here you create tables
-        db?.createTable("Customer", ifNotExists = true, 
+        db?.createTable("Customer", ifNotExists = true,
                     "id" to INTEGER + PRIMARY_KEY + UNIQUE,
                     "name" to TEXT,
                     "photo" to BLOB)
@@ -81,7 +79,7 @@ Asynchronous call example:
 class SomeActivity : Activity() {
     private fun loadAsync() {
         async(UI) {
-            val result = bg { 
+            val result = bg {
                 database.use { ... }
             }
             loadComplete(result)
@@ -104,7 +102,7 @@ With Anko you can easily create new tables and drop existing ones. The syntax is
 
 ```kotlin
 database.use {
-    createTable("Customer", true, 
+    createTable("Customer", true,
         "id" to INTEGER + PRIMARY_KEY + UNIQUE,
         "name" to TEXT,
         "photo" to BLOB)
@@ -134,7 +132,7 @@ db.insert("User", null, values)
 Anko lets you eliminate such ceremonies by passing values directly as arguments for the `insert()` function:
 
 ```kotlin
-db.insert("User", 
+db.insert("User",
     "id" to 42,
     "name" to "John",
     "email" to "user@domain.org"
@@ -145,7 +143,7 @@ or from within `database.use` as:
 
 ```kotlin
 database.use {
-    insert("User", 
+    insert("User",
         "id" to 42,
         "name" to "John",
         "email" to "user@domain.org"
@@ -160,7 +158,7 @@ Anko provides a convenient query builder. It may be created with
 `db.select(tableName, vararg columns)` where `db` is an instance of `SQLiteDatabase`.
 
 Method                                | Description
---------------------------------------|---------- 
+--------------------------------------|----------
 `column(String)`                      | Add a column to select query
 `distinct(Boolean)`                   | Distinct query
 `whereArgs(String)`                   | Specify raw String `where` query
@@ -199,7 +197,7 @@ db.select("User", "email").exec {
 So we have some `Cursor`, and how can we parse it into regular classes? Anko provides functions `parseSingle`, `parseOpt` and `parseList` to do it much more easily.
 
 Method                                | Description
---------------------------------------|---------- 
+--------------------------------------|----------
 `parseSingle(rowParser): T`           | Parse exactly one row
 `parseOpt(rowParser): T?`             | Parse zero or one row
 `parseList(rowParser): List<T>`       | Parse zero or more rows
