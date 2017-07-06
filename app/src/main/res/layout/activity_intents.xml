@@ -4,25 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <Button
-        android:id="@+id/btnIntents"
+        android:id="@+id/btnSA"
         android:layout_width="wrap_content"
-        android:text="Intents （意图）"
+        android:text="启动一个activity"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/btnDialogs"
+        android:id="@+id/btnCall"
         android:layout_width="wrap_content"
-        android:text="Dialogs and toasts（对话框 和 `吐司`）"
+        android:text="打电话"
         android:layout_height="wrap_content" />
     <Button
-        android:id="@+id/btnLog"
+        android:id="@+id/btnSMS"
         android:layout_width="wrap_content"
-        android:text="Logging（日志）"
+        android:text="发短信"
         android:layout_height="wrap_content" />
     <Button
-        android:id="@+id/btnRes"
+        android:id="@+id/btnURL"
         android:layout_width="wrap_content"
-        android:text="Resources and dimensions（资源 和 尺寸）"
+        android:text="打开网页"
         android:layout_height="wrap_content" />
-
+    <Button
+        android:id="@+id/btnShare"
+        android:layout_width="wrap_content"
+        android:text="分享文字"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnEmail"
+        android:layout_width="wrap_content"
+        android:text="发送邮件"
+        android:layout_height="wrap_content" />
 </LinearLayout>

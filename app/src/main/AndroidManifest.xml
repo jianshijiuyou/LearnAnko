@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.jiuyou.learnanko">
 
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +20,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".commons.IntentsActivity" />
-        <activity android:name=".commons.SomeOtherActivity"></activity>
+        <activity android:name=".commons.SomeOtherActivity" />
+        <activity android:name=".commons.DialogsActivity" />
+        <activity android:name=".commons.CommonsActivity"></activity>
     </application>
 
 </manifest>

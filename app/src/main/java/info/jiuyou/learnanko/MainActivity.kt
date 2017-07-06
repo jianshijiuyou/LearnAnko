@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.PermissionListener
-import info.jiuyou.learnanko.commons.IntentsActivity
+import info.jiuyou.learnanko.commons.CommonsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         btnAnkoCommons.setOnClickListener {
-            startActivity<IntentsActivity>()
+            startActivity<CommonsActivity>()
         }
 
         btnAnkoLayouts.setOnClickListener { toast("anko layouts") }
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         AndPermission.with(this@MainActivity)
                 .requestCode(100)
-                .permission(Manifest.permission.CALL_PHONE,Manifest.permission.SEND_SMS)
+                .permission(Manifest.permission.CALL_PHONE, Manifest.permission.SEND_SMS)
                 .callback(object : PermissionListener {
                     override fun onSucceed(requestCode: Int, grantPermissions: MutableList<String>) {
 
