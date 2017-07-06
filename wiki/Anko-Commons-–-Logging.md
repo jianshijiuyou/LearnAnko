@@ -66,7 +66,7 @@ class LoggingActivity : AppCompatActivity(), AnkoLogger {
     private val logCustomTag = AnkoLogger("my_tag")
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        、、、、、
+        、、、、、、
 
         log.info{"info log"}
         log.warn(null)
