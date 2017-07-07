@@ -1,4 +1,4 @@
-你是否已经厌倦了用 Android cursors 解析 SQLite 查询的结果，每次必须编写大量的模板代码才能解析出查询结果，并将其封装在无数的 `try..finally` 块中以关闭打开的所有资源。
+你是否已经厌倦了用 Android cursors 解析 SQLite 查询的结果，每次必须编写大量的模板代码才能解析出查询结果，并将其封装在无数的 `try..finally` 块中以保证能够释放所有的资源。
 
 Anko 提供了大量的扩展功能，大大简化了 SQLite 的使用方式。
 
@@ -6,15 +6,15 @@ Anko 提供了大量的扩展功能，大大简化了 SQLite 的使用方式。
 
 * [在你的项目中添加依赖](#在你的项目中添加依赖)
 * [访问数据库](#访问数据库)
-* [Creating and dropping tables](#creating-and-dropping-tables)
-* [Inserting data](#inserting-data)
-* [Querying data](#querying-data)
-* [Parsing query result](#parsing-query-result)
-* [Custom row parsers](#custom-row-parsers)
+* [表的创建和删除](#表的创建和删除)
+* [添加数据](#添加数据)
+* [查询数据](#查询数据)
+* [解析查询结果](#解析查询结果)
+* [自定义rowParsers](#自定义rowParsers)
 * [Cursor streams](#cursor-streams)
-* [Updating values](#updating-values)
-* [Transactions](#transactions)
-
+* [修改数据](#修改数据s)
+* [事务](#事务)
+* [本篇文章相关代码传送门](#本篇文章相关代码传送门)
 
 ## 在你的项目中添加依赖
 
@@ -47,7 +47,7 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatab
     override fun onCreate(db: SQLiteDatabase) {
         //创建表
         db.createTable("User",true,
-                "id" to INTEGER + PRIMARY_KEY + UNIQUE,
+                "id" to INTEGER + PRIMARY_KEY + UNIQUE,  //（1）
                 "name" to TEXT,
                 "sex" to TEXT)
     }
@@ -61,8 +61,10 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatab
 val Context.database: MyDatabaseOpenHelper
     get() = MyDatabaseOpenHelper.getInstance(getApplicationContext())
 ```
+（1）我运行的时候这里会报错（报错的原因是第三个关键字无法正确的解析，不知道是不是 bug 0.0），这里如果创建不成功先改成两个关键字就行了（`"id" to INTEGER + PRIMARY_KEY`）。
 
-在 use 中 的语句块自动被套上 `try` 块，并且语句块执行完毕后自动调用 `close` 方法释放资源，在 use 语句块中包含了 SQLiteDatabase 的实例，也就是可以直接调用它的所有 public 属性和方法。
+
+在 use 中 的语句块自动被套上 `try` 块，并且语句块执行完毕后自动调用 `close` 方法释放资源，在 use 语句块中包含了 SQLiteDatabase 的实例，也就是可以直接在语句块中使用 SQLiteDatabase 实例的所有 public 属性和方法。
 
 ```kotlin
 database.use {
@@ -73,50 +75,63 @@ database.use {
 异步调用示例：
 
 ```kotlin
-class SomeActivity : Activity() {
-    private fun loadAsync() {
-        async(UI) {
-            val result = bg {
-                database.use { ... }
-            }
-            loadComplete(result)
+async(UI) {
+    //在主线程中
+    val result = bg {
+        //在子线程中执行对数据库的操作
+        database.use {
+            //可以直接使用 SQLiteDatabase 对象的所有方法
+            //insert()
+            //query()
+            //......
         }
     }
+    //在主线程中对结果进行处理
+    //loadComplete(result)
 }
 ```
 
-<table>
-<tr><td width="50px" align="center">:penguin:</td>
-<td>
-<i>These and all methods mentioned below may throw <code>SQLiteException</code>. You have to handle it by yourself because it would be unreasonable for Anko to pretend that errors don't occur.</i>
-</td>
-</tr>
-</table>
+##### 注意
+ - use 语句块中的代码可能会抛出 SQLiteException , 如果你认为代码可能出错，需要自己手动捕获处理异常，不然程序会崩溃，如果你确定代码不会有任何问题，可以不做任何处理。
+ - bg 语句块会忽略其中的异常（至少我在本篇例子中操作数据库时是这样），所以如果你按照上面的 『异步调用示例』写代码，当 SQLiteException 异常发生时，不会有任何提示，这里要小心了，所以用 bg 语句块的时候最好手动捕获异常：
+   ```kotlin
+     val result = bg {
+        try {
+           database.use {
+              ...
+           }
+        } catch (e: SQLiteException){
+            e.printStackTrace()
+        }
+     }
+   ```
 
-## Creating and dropping tables
 
-With Anko you can easily create new tables and drop existing ones. The syntax is straightforward.
+
+## 表的创建和删除
+
+使用 Anko，您可以轻松的创建新并删除现有的表。语法很简单。
 
 ```kotlin
 database.use {
     createTable("Customer", true,
-        "id" to INTEGER + PRIMARY_KEY + UNIQUE,
+        "id" to INTEGER + PRIMARY_KEY,
         "name" to TEXT,
         "photo" to BLOB)
 }
 ```
 
-In SQLite, there are five main types: `NULL`, `INTEGER`, `REAL`, `TEXT` and `BLOB`. But each column may have some modifiers like `PRIMARY KEY` or `UNIQUE`. You can append such modifiers with "adding" them to the primary type name.
+在 SQLite 中， 有 5 种主要类型: `NULL`, `INTEGER`, `REAL`, `TEXT` 和 `BLOB`. 但每列可能有一些修饰符，如 `PRIMARY KEY` 或 `UNIQUE`。 你可以通过 `+` 号在需要的字段上加上这些修饰符。
 
-To drop a table, use the `dropTable` function:
+使用 `dropTable` 方法删除表：
 
 ```kotlin
 dropTable("User", true)
 ```
 
-## Inserting data
+## 添加数据
 
-Usually, you need a `ContentValues` instance to insert a row into the table. Here is an example:
+通常，您需要一个 `ContentValues` 实例来在表中插入一行。比如下面这样：
 
 ```kotlin
 val values = ContentValues()
@@ -126,7 +141,7 @@ values.put("email", "user@domain.org")
 db.insert("User", null, values)
 ```
 
-Anko lets you eliminate such ceremonies by passing values directly as arguments for the `insert()` function:
+Anko 可以通过 `insert()` 方法直接传入参数，更加直观，方便。
 
 ```kotlin
 db.insert("User",
@@ -136,39 +151,40 @@ db.insert("User",
 )
 ```
 
-or from within `database.use` as:
+或者
 
 ```kotlin
 database.use {
     insert("User",
-        "id" to 42,
-        "name" to "John",
-        "email" to "user@domain.org"
+            "id" to 42,
+            "name" to "John",
+            "email" to "user@domain.org")
 }
 ```
 
-Functions `insertOrThrow()`, `replace()`, `replaceOrThrow()` also exist and have the similar semantics.
+方法 `insertOrThrow()`, `replace()`, `replaceOrThrow()` 都存在并具有相同的功能。
 
-## Querying data
+通过查看源码就能知道，Anko 只是对 这些方法做了一层包装而已，所以功能并没有任何变化。
 
-Anko provides a convenient query builder. It may be created with
-`db.select(tableName, vararg columns)` where `db` is an instance of `SQLiteDatabase`.
+## 查询数据
 
-Method                                | Description
+Anko 提供了一个方便的查询生成器。 可以使用 `db.select(tableName, vararg columns)` 创建，其中 `db` 是 `SQLiteDatabase` 对象。
+
+方法                                  | 描述
 --------------------------------------|----------
-`column(String)`                      | Add a column to select query
-`distinct(Boolean)`                   | Distinct query
-`whereArgs(String)`                   | Specify raw String `where` query
-`whereArgs(String, args)` :star:      | Specify a `where` query with arguments
-`whereSimple(String, args)`           | Specify a `where` query with `?` mark arguments
-`orderBy(String, [ASC/DESC])`         | Order by this column
-`groupBy(String)`                     | Group by this column
-`limit(count: Int)`                   | Limit query result row count
-`limit(offset: Int, count: Int)`      | Limit query result row count with an offset
-`having(String)`                      | Specify raw `having` expression
-`having(String, args)` :star:         | Specify a `having` expression with arguments
+`column(String)`                      | 添加查询的列
+`distinct(Boolean)`                   | Distinct 查询
+`whereArgs(String)`                   | where（需要自己拼接字符串）
+`whereArgs(String, args)` :star:      | where，可自定义参数占位符
+`whereSimple(String, args)`           | where，参数占位符是 `?`
+`orderBy(String, [ASC/DESC])`         | 指定排序的列
+`groupBy(String)`                     | 指定分组的列
+`limit(count: Int)`                   | 设置查询结果的条目数
+`limit(offset: Int, count: Int)`      | 设置查询结果的条目数（列：`limit(5,10)` 跳过查询结果前 5 条，然后取10条）
+`having(String)`                      | 指定 `having` 表达式（需要自己拼接字符串）
+`having(String, args)` :star:         | 指定 `having` 表达式和参数
 
-Functions marked with :star: parse its arguments in a special way. They allow you to provide values in any order and support escaping seamlessly.
+用 :star: 标记的方法，参数是通过占位符一一对应的，所以参数的顺序可以打乱，下面是一个列子：
 
 ```kotlin
 db.select("User", "name")
@@ -177,31 +193,41 @@ db.select("User", "name")
         "userId" to 42)
 ```
 
-Here, `{userId}` part will be replaced with `42` and `{userName}` — with `'John'`. The value will be escaped if its type is not numeric (`Int`, `Float` etc.) or `Boolean`. For any other types, `toString()` representation will be used.
+这里， `{userId}` 将被替换成 `42` ， `{userName}` 被替换成 `'John'`， 如果传递的类型不是 (`Int`, `Float` ,`Boolean`) ，将会被 `toString()`。
 
-`whereSimple` function accepts arguments of `String` type. It works the same as [`query()`](http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html#query(java.lang.String,%20java.lang.String[],%20java.lang.String,%20java.lang.String[],%20java.lang.String,%20java.lang.String,%20java.lang.String)) from `SQLiteDatabase` (question marks `?` will be replaced with actual values from arguments).
+`whereSimple` 方法接受 `String` 类型的参数。 它和 `SQLiteDatabase` 中的 query() 方法相同（`?` 号是占位符，被对应的参数替换）。
 
-How can we execute the query? Using the `exec()` function. It accepts an extension function with the type of `Cursor.() -> T`. It simply launches the received extension function and then closes `Cursor` so you don't need to do it by yourself:
+执行 `exec` 方法就能获取到查询结果了，`exec` 中扩展了 Cursor 对象(`Cursor.() -> T`)，并且 exec 执行完之后自动释放资源。
 
 ```kotlin
-db.select("User", "email").exec {
-	// Doing some stuff with emails
+database.use {
+    select("User")
+            .column("email")
+            .exec {
+                while (moveToNext()){
+                    info("email:"+getString(0))
+                }
+            }
 }
 ```
+虽然方便了不少，但是还要操作 Cursor，差评！  
+说好的不使用 Cursor 呢，且往下看。
 
-## Parsing query results
 
-So we have some `Cursor`, and how can we parse it into regular classes? Anko provides functions `parseSingle`, `parseOpt` and `parseList` to do it much more easily.
+## 解析查询结果
 
-Method                                | Description
+为了彻底摆脱 `Cursor` 的阴影，Anko 提供了 `parseSingle`, `parseOpt` 和 `parseList` 三个方法。
+
+方法                                | 描述
 --------------------------------------|----------
-`parseSingle(rowParser): T`           | Parse exactly one row
-`parseOpt(rowParser): T?`             | Parse zero or one row
-`parseList(rowParser): List<T>`       | Parse zero or more rows
+`parseSingle(rowParser): T`           | 结果为一条数据
+`parseOpt(rowParser): T?`             | 结果为一条数据或者没有数据
+`parseList(rowParser): List<T>`       | 结果为多条数据
 
-Note that `parseSingle()` and `parseOpt()` will throw an exception if the received Cursor contains more than one row.
+注意哦，如果使用 `parseSingle()` 或者 `parseOpt()` ，当结果是多条数据的时候会抛出异常哦。
 
-Now the question is: what is `rowParser`? Well, each function supports two different types of parsers: `RowParser` and `MapRowParser`:
+那么问题来了，什么是 `rowParser` ？   
+每个方法都支持两种 parsers: `RowParser` 和 `MapRowParser`：
 
 ```kotlin
 interface RowParser<T> {
@@ -213,9 +239,9 @@ interface MapRowParser<T> {
 }
 ```
 
-If you want to write your query in a very efficient way, use RowParser (but then you must know the index of each column). `parseRow` accepts a list of `Any` (the type of `Any` could practically be nothing but `Long`, `Double`, `String` or `ByteArray`). `MapRowParser`, on the other hand, lets you get row values by using column names.
+如果追求效率，请使用 RowParser （如果是多列，你必须要知道每列的索引）。 `parseRow` 实际上只支持 `Long`, `Double`, `String` 和 `ByteArray` 。而 `MapRowParser` 可以通过列名来获取值。
 
-Anko already has parsers for simple single-column rows:
+Anko 提供了常用的单列解析器（结果只有一列的时候可用）：
 
 * `ShortParser`
 * `IntParser`
@@ -225,25 +251,59 @@ Anko already has parsers for simple single-column rows:
 * `StringParser`
 * `BlobParser`
 
-Also, you can create a row parser from the class constructor. Assuming you have a class:
+以 StringParser 为例，用法如下：
+```kotlin
+//查询所有用户的邮箱
+database.use {
+    select("User")
+            .column("email")
+            .whereArgs("name = {userName}","userName" to "jack")
+            .parseList(StringParser)
+            .forEach {
+                info { "email:$it" }
+            }
+}
+```
+当查询结果为多列的时候可以用 MapRowParser。  
+首先要定义个数据类。
+```kotlin
+data class  User(val id:Long,val name:String,val email:String)
+```
+然后自定义一个 MapRowParser。
+```kotlin
+class UserRowParser : MapRowParser<User> {
+    override fun parseRow(columns: Map<String, Any?>): User {
+        return User(columns["id"] as Long, columns["name"] as String, columns["email"] as String)
+    }
+}
+```
+最后使用
+```kotlin
+database.use {
+    select("User")
+            .parseList(UserRowParser())
+            .forEach {
+                info { it }
+            }
+}
+```
+虽然目的达到了，但是还是有点麻烦对不对。  
+不用担心，Anko 早已看穿了这一切，使用 classParser 连 UserRowParser 都不需要了：
 
 ```kotlin
-class Person(val firstName: String, val lastName: String, val age: Int)
+database.use {
+    select("User")
+            .parseList(classParser<User>())
+            .forEach {
+                info { it }
+            }
+}
 ```
 
-The parser will be as simple as:
 
-```kotlin
-val rowParser = classParser<Person>()
-```
+## 自定义rowParsers
 
-For now, Anko **does not support** creating such parsers if the primary constructor has optional parameters. Also, note that constructor will be invoked using Java Reflection so writing a custom `RowParser` is more reasonable for huge data sets.
-
-If you are using Anko `db.select()` builder, you can directly call `parseSingle`, `parseOpt` or `parseList` on it and pass an appropriate parser.
-
-## Custom row parsers
-
-For instance, let's make a new parser for columns `(Int, String, String)`. The most naive way to do so is:
+自定义 rowParsers 同自定义 MapRowParser（区别只在于前者需要知道数据的索引，后者需要知道列名）：
 
 ```kotlin
 class MyRowParser : RowParser<Triple<Int, String, String>> {
@@ -253,54 +313,92 @@ class MyRowParser : RowParser<Triple<Int, String, String>> {
 }
 ```
 
-Well, now we have three explicit casts in our code. Let's get rid of them by using the `rowParser` function:
+使用 lambda 表达式实现：
 
 ```kotlin
-val parser = rowParser { id: Int, name: String, email: String ->
-    Triple(id, name, email)
+database.use {
+    select("User")
+            .parseList(rowParser { id: Long, name: String, email: String -> User(id, name, email) })
+            .forEach {
+                info { it }
+            }
 }
 ```
-
-And that's it! `rowParser` makes all casts under the hood and you can name the lambda parameters as you want.
 
 ## Cursor streams
 
-Anko provides a way to access SQLite `Cursor` in a functional way. Just call `cursor.asSequence()` or `cursor.asMapSequence()` extension functions to get a sequence of rows. Do not forget to close the `Cursor` :)
-
-## Updating values
-
-Let's give a new name to one of our users:
-
+Anko 还提供了两种方式解析 Cursor ，转换成 数组列表 或者 map 列表（`cursor.asSequence()` 和 `cursor.asMapSequence()`）：
 ```kotlin
-update("User", "name" to "Alice")
-    .where("_id = {userId}", "userId" to 42)
-    .exec()
-```
+database.use {
+    select("User")
+            .exec {
+                for (item in asSequence()) {
+                    info("id=${item[0]},name=${item[1]},email=${item[2]}")
+                }
+            }
+}
 
-Update also has a `whereSimple()` method in case you want to provide the query in a traditional way:
-
-```kotlin
-update("User", "name" to "Alice")
-    .`whereSimple`("_id = ?", 42)
-    .exec()
-```
-
-## Transactions
-
-There is a special function called `transaction()` which allows you to enclose several database operations in a single SQLite transaction.
-
-```kotlin
-transaction {
-    // Your transaction code
+database.use {
+    select("User")
+            .exec {
+                for (item in asMapSequence()) {
+                    info("id=${item["id"]},name=${item["name"]},email=${item["email"]}")
+                }
+            }
 }
 ```
 
-The transaction will be marked as successful if no exception was thrown inside the `{}` block.
 
-<table>
-<tr><td width="50px" align="center">:penguin:</td>
-<td>
-<i>If you want to abort a transaction for some reason, just throw <code>TransactionAbortException</code>. You don't need to handle this exception by yourself in this case.</i>
-</td>
-</tr>
-</table>
+## 修改数据
+
+修改某一个用户的名字：
+
+```kotlin
+database.use {
+    update("User", "name" to "zhangsan")
+            .whereArgs("id = {userId}", "userId" to 123)
+            .exec()
+}
+```
+
+`whereSimple()` 方法用法：
+
+```kotlin
+database.use {
+    update("User", "name" to "zhangsan")
+            .whereSimple("id = ?",123.toString())
+            .exec()
+}
+```
+
+## 事务
+
+`transaction()` 方法封装了事务，在其中发生错误时，方法中所有对数据库的操作都会回滚，如果没有发生任何错误，事务将被提交：
+
+```kotlin
+database.use {
+    transaction {
+        update("User", "name" to "lisi")
+                .whereSimple("id = ?",123.toString())
+                .exec()
+        throw Exception("error")
+        //抛出异常，程序崩溃，数据将修改失败
+    }
+}
+```
+
+如果要由于某种原因需要中止事务，只需抛出TransactionAbortException。这个异常只会终止事务，程序不会崩溃，当然所有事务中对数据库的操作也无效。
+```kotlin
+database.use {
+    transaction {
+        update("User", "name" to "lisi")
+                .whereSimple("id = ?",123.toString())
+                .exec()
+        throw TransactionAbortException()
+        //后面的代码都不会在执行了
+        //....................
+    }
+}
+```
+### 本篇文章相关代码传送门
+[info/jiuyou/learnanko/sqlite/](https://github.com/jianshijiuyou/LearnAnko/tree/master/app/src/main/java/info/jiuyou/learnanko/sqlite)

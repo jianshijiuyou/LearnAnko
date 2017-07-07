@@ -2,7 +2,9 @@ package info.jiuyou.learnanko.sqlite
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.db.*
+import org.jetbrains.anko.info
 
 /**
  * ==========================================
@@ -21,7 +23,7 @@ import org.jetbrains.anko.db.*
  * </p>
  * ==========================================
  */
-class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1) {
+class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatabase", null, 1), AnkoLogger {
     companion object {
         private var instance: MyDatabaseOpenHelper? = null
 
@@ -36,14 +38,17 @@ class MyDatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "MyDatab
 
     override fun onCreate(db: SQLiteDatabase) {
         //创建表
-        db.createTable("User",true,
-                "id" to INTEGER + PRIMARY_KEY + UNIQUE,
+        info("====onCreate====createTable User start=========")
+        db.createTable("User", true,
+                "id" to INTEGER + PRIMARY_KEY,
                 "name" to TEXT,
-                "sex" to TEXT)
+                "email" to TEXT)
+        info("====onCreate====createTable User end=========")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         //数据库版本变更后回调
+        info("========onUpgrade=========")
     }
 }
 
