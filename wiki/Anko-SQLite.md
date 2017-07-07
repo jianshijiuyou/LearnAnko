@@ -10,7 +10,7 @@ Anko 提供了大量的扩展功能，大大简化了 SQLite 的使用方式。
 * [添加数据](#添加数据)
 * [查询数据](#查询数据)
 * [解析查询结果](#解析查询结果)
-* [自定义rowParsers](#自定义rowParsers)
+* [自定义rowParsers](#自定义rowparsers)
 * [Cursor streams](#cursor-streams)
 * [修改数据](#修改数据s)
 * [事务](#事务)
