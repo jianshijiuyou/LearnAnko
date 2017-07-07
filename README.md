@@ -6,7 +6,7 @@
 因为笔者能力有限，所以本文并不是真正意义上的翻译，很多地方都是笔者根据自己的的理解所写，如有错误，欢迎指正，与君共勉。  
 
 在浏览本文档及相关 demo 前，你应该对 kotlin 的基础用法和相关特性有所了解。  
-如果还没有了解，请前往 [kotlin 中文社区](https://www.kotlincn.net/docs/reference/)。
+如果还没有了解，请前往 [kotlin 语言中文站](https://www.kotlincn.net/docs/reference/)。
 
 ###### 在项目中引入 Anko：
 ```groovy
@@ -28,6 +28,6 @@ Anko 由以下几个部分组成:
 	* [Dialogs and toasts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Dialogs.md);（已完成）
 	* [Logging](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Logging.md);（已完成）
 	* [Resources and dimensions](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Misc.md);（已完成）
-* [Anko Layouts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Layouts.md): 用一种快速并且类型安全的方式动态的编写 android 布局
+* [Anko Layouts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Layouts.md): （未翻译）用一种快速并且类型安全的方式动态的编写 android 布局
 * [Anko SQLite](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-SQLite.md): （已完成）更加简单的操作数据库
-* [Anko Coroutines](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Coroutines.md): 协程
+* [Anko Coroutines](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Coroutines.md):（未翻译） 协程
