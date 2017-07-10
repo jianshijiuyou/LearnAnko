@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import info.jiuyou.learnanko.R
 import kotlinx.android.synthetic.main.activity_sqlite.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.db.*
 import org.jetbrains.anko.info
@@ -98,7 +102,7 @@ class SQLiteActivity : AppCompatActivity(), AnkoLogger {
         }
 
         btnUpdate.setOnClickListener {
-//            database.use {
+            //            database.use {
 //                update("User", "name" to "zhangsan")
 //                        .whereArgs("id = {userId}", "userId" to 123)
 //                        .exec()
@@ -106,7 +110,7 @@ class SQLiteActivity : AppCompatActivity(), AnkoLogger {
 
             database.use {
                 update("User", "name" to "zhangsan")
-                        .whereSimple("id = ?",123.toString())
+                        .whereSimple("id = ?", 123.toString())
                         .exec()
             }
         }
@@ -117,7 +121,7 @@ class SQLiteActivity : AppCompatActivity(), AnkoLogger {
             database.use {
                 transaction {
                     update("User", "name" to "lisi")
-                            .whereSimple("id = ?",123.toString())
+                            .whereSimple("id = ?", 123.toString())
                             .exec()
 
                     throw Exception("error")
