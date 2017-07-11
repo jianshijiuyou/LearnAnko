@@ -1,14 +1,15 @@
-## Contents
+## 概要
 
-* [Using Anko Dialogs in your project](#using-anko-dialogs-in-your-project)
+* [在你的项目中添加依赖](#在你的项目中添加依赖)
 * [Toasts](#toasts)
 * [Alerts](#alerts)
 * [Selectors](#selectors)
 * [Progress dialogs](#progress-dialogs)
+* [本篇文章相关代码传送门](#本篇文章相关代码传送门)
 
-## Using Anko Dialogs in your project
+## 在你的项目中添加依赖
 
-Dialog helpers are inside the `anko-commons` artifact. Add it as a dependency to your `build.gradle`:
+ `build.gradle`:
 
 ```groovy
 dependencies {
@@ -18,7 +19,7 @@ dependencies {
 
 ## Toasts
 
-Simply shows a [Toast](https://developer.android.com/guide/topics/ui/notifiers/toasts.html) message.
+显示一个 toast 消息
 
 ```kotlin
 toast("Hi there!")
@@ -28,50 +29,64 @@ longToast("Wow, such a duration")
 
 ## Alerts
 
-A small DSL for showing [alert dialogs](https://developer.android.com/guide/topics/ui/dialogs.html).
+显示一个对话框（alert dialogs）（android 默认 style）
 
 ```kotlin
-alert("Hi, I'm Roy", "Have you tried turning it off and on again?") {
-    yesButton { toast("Oh…") }
+alert("这是长长长的内容", "这是短短的标题") {
+    yesButton { toast("确定") }
+    noButton {}
+}.show()
+//自定义button文字
+alert("这是长长长的内容", "这是短短的标题"){
+    positiveButton("前进"){
+        toast("前进")
+    }
+    negativeButton("后退"){
+        toast("后退")
+    }
+} .show()
+```
+
+Appcompat style（就是 support:appcompat-v7 中的 dialogs）
+
+```kotlin
+alert(Appcompat,"这是长长长的内容", "Appcompat style dialog") {
+    yesButton { toast("确定") }
     noButton {}
 }.show()
 ```
 
-The code above will show the default Android alert dialog. If you want to switch to the appcompat implementation, use the `Appcompat` dialog factory:
-
-```kotlin
-alert(Appcompat, "Some text message").show()
-```
-
-`Android` and `Appcompat` dialog factories are included by default, but you can create your custom factories by implementing the `AlertBuilderFactory` interface.
-
-`alert()` functions seamlessly support Anko layouts as custom views:
+自定义 dialog
 
 ```kotlin
 alert {
     customView {
-        editText()
+        val et = editText()
+        et.hint="custom dialog"
     }
 }.show()
 ```
 
 ## Selectors
 
-`selector()` shows an alert dialog with a list of text items:
-
 ```kotlin
-val countries = listOf("Russia", "USA", "Japan", "Australia")
-selector("Where are you from?", countries) { dialogInterface, i ->
-    toast("So you're living in ${countries[i]}, right?")
+val countries = listOf("item1", "item2", "item3", "item4")
+selector("单项选择", countries) { dialogInterface, i ->
+    toast("你选择了 ${countries[i]} ！！！")
 }
 ```
 
 ## Progress dialogs
 
-`progressDialog()` creates and shows a [progress dialog](https://developer.android.com/reference/android/app/ProgressDialog.html).
 
 ```kotlin
-val dialog = progressDialog(message = "Please wait a bit…", title = "Fetching data")
+//带进度条的
+val dialog = indeterminateProgressDialog(message = "正在加载中…", title = "提示")
+//设置进度
+dialog.progress=10
+//不带进度条的（转圈）
+indeterminateProgressDialog(message = "正在加载中…", title = "提示")
 ```
 
-An indeterminate progress dialog is also available (see `indeterminateProgressDialog()`).
+### 本篇文章相关代码传送门
+[DialogsActivity.kt](https://github.com/jianshijiuyou/LearnAnko/blob/master/app/src/main/java/info/jiuyou/learnanko/commons/DialogsActivity.kt)

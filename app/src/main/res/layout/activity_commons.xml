@@ -3,26 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <Button
+        android:id="@+id/btnIntents"
+        android:layout_width="wrap_content"
+        android:text="Intents （意图）"
+        android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/btnAnkoCommons"
+        android:id="@+id/btnDialogs"
         android:layout_width="wrap_content"
-        android:text="Anko Commons 一个轻量级的组件帮助库"
+        android:text="Dialogs and toasts（对话框 和 `吐司`）"
         android:layout_height="wrap_content" />
     <Button
-        android:id="@+id/btnAnkoLayouts"
+        android:id="@+id/btnLog"
         android:layout_width="wrap_content"
-        android:text="Anko Layouts 用一种快速并且类型安全的方式动态的编写 android 布局"
+        android:text="Logging（日志）"
         android:layout_height="wrap_content" />
     <Button
-        android:id="@+id/btnAnkoSQLite"
+        android:id="@+id/btnRes"
         android:layout_width="wrap_content"
-        android:text="Anko SQLite 更加简单的操作数据库"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/btnAnkoCoroutines"
-        android:layout_width="wrap_content"
-        android:text="Anko Coroutines 协程"
+        android:text="Resources and dimensions（资源 和 尺寸）"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
