@@ -9,6 +9,7 @@ import org.jetbrains.anko.*
 
 class LoggingActivity : AppCompatActivity(), AnkoLogger {
     private val log = AnkoLogger(this::class.java)
+    //override val loggerTag: String="customTag"
     private val logCustomTag = AnkoLogger("my_tag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +18,7 @@ class LoggingActivity : AppCompatActivity(), AnkoLogger {
         btnInherit.setOnClickListener {
             info("info log")
             warn(null) // 打印 "null"
-            //这里debug打印不出来，因为内部调用了Log.isLoggable方法，具体自行google
+            //这里debug打印不出来，因为内部调用了Log.isLoggable方法，默认级别是info，所以debug打印不出信息
             debug("debug log")
         }
 

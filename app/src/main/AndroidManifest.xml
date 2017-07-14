@@ -27,7 +27,7 @@
         <activity android:name=".commons.LoggingActivity" />
         <activity android:name=".commons.MiscActivity" />
         <activity android:name=".sqlite.SQLiteActivity" />
-        <activity android:name=".coroutines.BasicsActivity"></activity>
+        <activity android:name=".coroutines.CoroutinesActivity"></activity>
     </application>
 
 </manifest>
