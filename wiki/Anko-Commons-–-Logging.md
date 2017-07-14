@@ -36,6 +36,12 @@ class LoggingActivity : AppCompatActivity(), AnkoLogger {
 //  W/LoggingActivity: null
 ```
 
+日志的 TAG 默认就是类名称，当然是可以自定义的,覆写这个变量就可以了：
+```kotlin
+override val loggerTag: String = "xxxxTag"
+
+```
+
 #### 方法对照表
 
 android.util.Log  | AnkoLogger

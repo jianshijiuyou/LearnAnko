@@ -33,7 +33,7 @@ class MyActivity : Activity() {
 
 	async(UI) {
 	    val data = getData()
-			
+
 	    // Use ref() instead of this@MyActivity
 	    ref().showData()
 	}

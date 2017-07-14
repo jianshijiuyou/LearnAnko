@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,7 +26,8 @@
         <activity android:name=".commons.CommonsActivity" />
         <activity android:name=".commons.LoggingActivity" />
         <activity android:name=".commons.MiscActivity" />
-        <activity android:name=".sqlite.SQLiteActivity"></activity>
+        <activity android:name=".sqlite.SQLiteActivity" />
+        <activity android:name=".coroutines.BasicsActivity"></activity>
     </application>
 
 </manifest>

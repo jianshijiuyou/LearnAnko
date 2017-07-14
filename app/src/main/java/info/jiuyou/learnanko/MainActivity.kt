@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.PermissionListener
 import info.jiuyou.learnanko.commons.CommonsActivity
+import info.jiuyou.learnanko.coroutines.BasicsActivity
 import info.jiuyou.learnanko.sqlite.SQLiteActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.startActivity
@@ -26,7 +27,9 @@ class MainActivity : AppCompatActivity() {
             startActivity<SQLiteActivity>()
         }
 
-        btnAnkoCoroutines.setOnClickListener { toast("anko coroutines") }
+        btnAnkoCoroutines.setOnClickListener {
+            //startActivity<BasicsActivity>()
+        }
 
 
 
