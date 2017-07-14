@@ -26,13 +26,13 @@ Anko 是一个 kotlin library ， 它能让你更轻松更快速的开发 androi
 Anko 由以下几个部分组成:
 
 * Anko Commons: 一个轻量级的组件帮助库：
-	* [Intents](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-%E2%80%93-Intents.md); （已完成）
-	* [Dialogs and toasts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Dialogs.md);（已完成）
-	* [Logging](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Logging.md);（已完成）
-	* [Resources and dimensions](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Misc.md);（已完成）
+	* [Intents](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-%E2%80%93-Intents.md);
+	* [Dialogs and toasts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Dialogs.md);
+	* [Logging](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Logging.md);
+	* [Resources and dimensions](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Commons-–-Misc.md);
 * [Anko Layouts](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Layouts.md): （由 [zhongzilu](https://github.com/zhongzilu) 翻译）用一种快速并且类型安全的方式动态的编写 android 布局
-* [Anko SQLite](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-SQLite.md): （已完成）更加简单的操作数据库
-* [Anko Coroutines](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Coroutines.md):（未翻译） 协程
+* [Anko SQLite](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-SQLite.md): 更加简单的操作数据库
+* [Anko Coroutines](https://github.com/jianshijiuyou/LearnAnko/blob/master/wiki/Anko-Coroutines.md): 协程
 
 ### 推荐阅读
  - [用 Kotlin 写 Android 01 难道只有环境搭建这么简单？](http://www.kotliner.cn/2017/01/16/%E7%94%A8%20Kotlin%20%E5%86%99%20Android%2001%20%E9%9A%BE%E9%81%93%E5%8F%AA%E6%9C%89%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E8%BF%99%E4%B9%88%E7%AE%80%E5%8D%95/)
